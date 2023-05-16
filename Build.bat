@@ -1,0 +1,1 @@
+jai Main.jai -exe JaiShooter
