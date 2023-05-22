@@ -1,1 +1,1 @@
-jai Main.jai -exe JaiShooter
+jai Source/Main.jai -exe JaiShooter -output_path ../
