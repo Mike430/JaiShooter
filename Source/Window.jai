@@ -7,7 +7,6 @@ Window :: struct
 {
     WindowPtr : *SDL_Window = null;
     WindowSurface : *SDL_Surface = null;
-    WindowRenderer : *SDL_Renderer = null;
     SurfaceWidth : s32 = 0;
     SurfaceHeight : s32 = 0;
 
