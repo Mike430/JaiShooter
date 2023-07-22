@@ -8,6 +8,7 @@
 main :: ()
 {
     SDL_Init(SDL_INIT_VIDEO);
+    print("SDL_VERSION =   \t\t%\n", to_string(SDL_GetRevision()));
 
     GameWindow : Window;
     GameWindow.InitialiseWindow(*GameWindow, "JAI SHOOTER", 1280, 800);
@@ -58,7 +59,7 @@ main :: ()
         LevelEditor.DrawEditor(*LevelEditor);
 
         // REPLACE WITH PROPER TIMER LOGIC
-        //SDL_Delay(0.016);
+        SDL_Delay(16);
     }
 
     GameWindow.DestroyWindow(*GameWindow);
