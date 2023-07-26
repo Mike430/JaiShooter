@@ -1,13 +1,6 @@
-#import "Basic";
-#import "SDL";
-#import "String";
-#import "Math";
-#load "Utilities.jai";
-#load "Window.jai";
-
-Editor :: struct
+SEditor :: struct
 {
-	EditorWindow : Window;
+	EditorWindow : SWindow;
 	MousePosition : Vector2;
 	MouseTrailA : Vector2;
 	MouseTrailB : Vector2;
@@ -15,21 +8,21 @@ Editor :: struct
 	MouseTrailD : Vector2;
 	EditorRenderer : *SDL_Renderer = null;
 
-	InitialiseEditor :: (InEditor : *Editor) -> bool
+	InitialiseEditor :: (InEditor : *SEditor, InEditorName : string, InWindowWidth : s32, InWindowHeight : s32) -> bool
 	{
-    	InEditor.EditorWindow.InitialiseWindow(*InEditor.EditorWindow, "EDITOR WINDOW", 800, 800);
+    	InEditor.EditorWindow.InitialiseWindow(*InEditor.EditorWindow, InEditorName, InWindowWidth, InWindowHeight);
     	InEditor.EditorRenderer = SDL_CreateRenderer(InEditor.EditorWindow.WindowPtr, -1, .ACCELERATED);
 
     	if InEditor.EditorRenderer == null
         {
-            print( "Renderer could not be created! SDL Error: %\n", SDL_GetError() );
+            print( "Editor Renderer could not be created! SDL Error: %\n", SDL_GetError() );
             return false;
         }
 
         return true;
 	}
 
-	UpdateEditor :: (InEditor : *Editor)
+	UpdateEditor :: (InEditor : *SEditor, InScene : *SScene)
 	{
 		X, Y : s32;
 		MouseState : u32 = SDL_GetMouseState(*X, *Y);
@@ -41,18 +34,18 @@ Editor :: struct
 		InEditor.MousePosition.y = cast(float)Y;
 	}
 
-	DrawEditor :: (InEditor : *Editor)
+	DrawEditor :: (InEditor : *SEditor, InScene : *SScene)
 	{
         SDL_SetRenderDrawColor( InEditor.EditorRenderer, 0, 0, 0, 0 );
         SDL_RenderClear(InEditor.EditorRenderer);
 
-        DrawWorld(InEditor);
+        DrawWorld(InEditor, InScene);
 
         SDL_UpdateWindowSurface(InEditor.EditorWindow.WindowPtr);
         SDL_RenderPresent(InEditor.EditorRenderer);
 	}
 
-	DrawWorld :: (InEditor : *Editor)
+	DrawWorld :: (InEditor : *SEditor, InScene : *SScene)
 	{
         DrawShape_Cross(InEditor, InEditor.MousePosition, 15.0, 255, 0, 0);
         DrawShape_Circle(InEditor, InEditor.MouseTrailA, 12.0, 0, 234, 255);
@@ -61,13 +54,13 @@ Editor :: struct
         DrawShape_Circle(InEditor, InEditor.MouseTrailD, 3.0, 0, 234, 255);
 	}
 
-	DrawShape_Cross :: (InEditor : *Editor, InLocation : Vector2, InExtent : float, InR : u8, InG : u8, InB : u8)
+	DrawShape_Cross :: (InEditor : *SEditor, InLocation : Vector2, InExtent : float, InR : u8, InG : u8, InB : u8)
 	{
 		DrawShape_Line(InEditor, Vector2.{InLocation.x - InExtent, InLocation.y + InExtent}, Vector2.{InLocation.x + InExtent, InLocation.y - InExtent}, InR, InG, InB);
 		DrawShape_Line(InEditor, Vector2.{InLocation.x - InExtent, InLocation.y - InExtent}, Vector2.{InLocation.x + InExtent, InLocation.y + InExtent}, InR, InG, InB);
 	}
 
-	DrawShape_Circle :: (InEditor : *Editor, InLocation : Vector2, InRadius : float, InR : u8, InG : u8, InB : u8)
+	DrawShape_Circle :: (InEditor : *SEditor, InLocation : Vector2, InRadius : float, InR : u8, InG : u8, InB : u8)
 	{
 		Resolution := 12;
 		Division := 360 / Resolution;
@@ -85,7 +78,15 @@ Editor :: struct
 		}
 	}
 
-	DrawShape_Line :: (InEditor : *Editor, InStartLocation : Vector2, InEndLocation : Vector2, InR : u8, InG : u8, InB : u8)
+	DrawShape_Arrow :: (InEditor : *SEditor, InPosition : Vector2, InRotation : float, InScale : float, InR : u8, InG : u8, InB : u8)
+	{
+		DrawShape_Line(InEditor, Vector2.{0.0, 1.0} * InScale, Vector2.{0.75, -1.0} * InScale, InR, InG, InB);
+		DrawShape_Line(InEditor, Vector2.{0.75, -1.0} * InScale, Vector2.{0.0, -0.5} * InScale, InR, InG, InB);
+		DrawShape_Line(InEditor, Vector2.{0.0, -0.5} * InScale, Vector2.{-0.75, -1.0} * InScale, InR, InG, InB);
+		DrawShape_Line(InEditor, Vector2.{-0.75, -1.0} * InScale, Vector2.{0.0, 1.0} * InScale, InR, InG, InB);
+	}
+
+	DrawShape_Line :: (InEditor : *SEditor, InStartLocation : Vector2, InEndLocation : Vector2, InR : u8, InG : u8, InB : u8)
 	{
         SDL_SetRenderDrawColor(InEditor.EditorRenderer, InR, InG, InB, 255);
         SDL_RenderDrawLine(InEditor.EditorRenderer, cast(s32)InStartLocation.x, cast(s32)InStartLocation.y, cast(s32)InEndLocation.x, cast(s32)InEndLocation.y);

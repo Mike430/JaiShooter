@@ -1,16 +1,11 @@
-#import "Basic";
-#import "SDL";
-#import "String";
-#import "Math";
-
-Window :: struct
+SWindow :: struct
 {
     WindowPtr : *SDL_Window = null;
     WindowSurface : *SDL_Surface = null;
     SurfaceWidth : s32 = 0;
     SurfaceHeight : s32 = 0;
 
-    InitialiseWindow :: (InWindow : *Window, InWindowTitle : string, InWidth : s32, InHeight : s32) -> bool
+    InitialiseWindow :: (InWindow : *SWindow, InWindowTitle : string, InWidth : s32, InHeight : s32) -> bool
     {
         InWindow.WindowPtr = SDL_CreateWindow(InWindowTitle.data, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, InWidth, InHeight, SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN);
 
@@ -26,12 +21,12 @@ Window :: struct
         return true;
     }
 
-    DestroyWindow :: (InWindow : *Window)
+    DestroyWindow :: (InWindow : *SWindow)
     {
         SDL_DestroyWindow(InWindow.WindowPtr);
     }
 
-    GetPixels :: (InWindow : *Window) -> *u32
+    GetPixels :: (InWindow : *SWindow) -> *u32
     {
         return InWindow.WindowSurface.pixels;
     }
