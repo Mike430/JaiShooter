@@ -33,6 +33,8 @@ main :: ()
                     exit = true;
                 case SDL_KEYUP;
                     if event.key.keysym.sym == SDLK_ESCAPE exit = true;
+                case SDL_WINDOWEVENT;
+                    if event.window.event == SDL_WINDOWEVENT_CLOSE exit = true;
             }
         }
 
