@@ -1,5 +1,11 @@
+SWall :: struct
+{
+	Loops : bool = false;
+	Corners : [..]Vector2;
+}
+
 SScene :: struct
 {
-	Walls : [..]Vector2;
+	Walls : [..]SWall;
 	Player : SPlayer;
 }

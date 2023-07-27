@@ -47,6 +47,17 @@ SEditor :: struct
 
 	DrawWorld :: (InEditor : *SEditor, InScene : *SScene)
 	{
+		for Wall, WIndex : InScene.Walls
+		{
+			for Corner, CIndex : Wall.Corners
+			{
+				DrawShape_Circle(InEditor, Corner, 10, 0, 255, 0);
+
+				if CIndex < Wall.Corners.count - 1 { DrawShape_Line(InEditor, Corner, Wall.Corners[CIndex + 1], 0, 255, 0); }
+				else if Wall.Loops == true {DrawShape_Line(InEditor, Corner, Wall.Corners[0], 0, 255, 0);}
+			}
+		}
+
         DrawShape_Cross(InEditor, InEditor.MousePosition, 15.0, 255, 0, 0);
         DrawShape_Circle(InEditor, InEditor.MouseTrailA, 12.0, 0, 234, 255);
         DrawShape_Circle(InEditor, InEditor.MouseTrailB, 9.0, 0, 234, 255);

@@ -20,6 +20,23 @@ main :: ()
 
     Game.InitialiseGame(*Game, "JAI SHOOTER", SCREEN_WIDTH, SCREEN_HEIGHT);
     SceneEditor.InitialiseEditor(*SceneEditor, "EDITOR WINDOW", 800, 800);
+
+    WallA : SWall;
+    WallB : SWall;
+    array_add(*Scene.Walls, WallA);
+    array_add(*Scene.Walls, WallB);
+
+    Scene.Walls[0].Loops = false;
+    array_add(*Scene.Walls[0].Corners, Vector2.{500.0, 0.0});
+    array_add(*Scene.Walls[0].Corners, Vector2.{600.0, 250.0});
+    array_add(*Scene.Walls[0].Corners, Vector2.{350.0, 270.0});
+    array_add(*Scene.Walls[0].Corners, Vector2.{400.0, 512.0});
+
+    Scene.Walls[1].Loops = true;
+    array_add(*Scene.Walls[1].Corners, Vector2.{50.0, 50.0});
+    array_add(*Scene.Walls[1].Corners, Vector2.{50.0, -50.0});
+    array_add(*Scene.Walls[1].Corners, Vector2.{-50.0, -50.0});
+    array_add(*Scene.Walls[1].Corners, Vector2.{-50.0, 50.0});
     
     exit := false;
     while !exit
