@@ -37,6 +37,9 @@ main :: ()
     array_add(*Scene.Walls[1].Corners, Vector2.{50.0, -50.0});
     array_add(*Scene.Walls[1].Corners, Vector2.{-50.0, -50.0});
     array_add(*Scene.Walls[1].Corners, Vector2.{-50.0, 50.0});
+
+    Scene.Player.Transform.Position = Vector2.{50.0, 600.0};
+    Scene.Player.Transform.Orientation = 0.0;
     
     exit := false;
     while !exit
@@ -54,6 +57,8 @@ main :: ()
                     if event.window.event == SDL_WINDOWEVENT_CLOSE exit = true;
             }
         }
+
+        Scene.Player.Transform.Orientation += 1.0;
 
         Game.UpdateGame(*Game, *Scene);
         SceneEditor.UpdateEditor(*SceneEditor, *Scene);

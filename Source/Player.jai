@@ -1,5 +1,4 @@
 SPlayer :: struct
 {
-	Position : Vector2;
-	Rotation : float;
+	Transform : STransform2D;
 }

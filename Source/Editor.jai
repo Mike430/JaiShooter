@@ -58,6 +58,8 @@ SEditor :: struct
 			}
 		}
 
+		DrawShape_Arrow(InEditor, InScene.Player.Transform, 17.5, 0, 255, 255);
+
         DrawShape_Cross(InEditor, InEditor.MousePosition, 15.0, 255, 0, 0);
         DrawShape_Circle(InEditor, InEditor.MouseTrailA, 12.0, 0, 234, 255);
         DrawShape_Circle(InEditor, InEditor.MouseTrailB, 9.0, 0, 234, 255);
@@ -73,7 +75,7 @@ SEditor :: struct
 
 	DrawShape_Circle :: (InEditor : *SEditor, InLocation : Vector2, InRadius : float, InR : u8, InG : u8, InB : u8)
 	{
-		Resolution := 12;
+		Resolution := 8;
 		Division := 360 / Resolution;
 		Counter := 0;
 
@@ -89,12 +91,23 @@ SEditor :: struct
 		}
 	}
 
-	DrawShape_Arrow :: (InEditor : *SEditor, InPosition : Vector2, InRotation : float, InScale : float, InR : u8, InG : u8, InB : u8)
+	DrawShape_Arrow :: (InEditor : *SEditor, InTransform : STransform2D, InScale : float, InR : u8, InG : u8, InB : u8)
 	{
-		DrawShape_Line(InEditor, Vector2.{0.0, 1.0} * InScale, Vector2.{0.75, -1.0} * InScale, InR, InG, InB);
-		DrawShape_Line(InEditor, Vector2.{0.75, -1.0} * InScale, Vector2.{0.0, -0.5} * InScale, InR, InG, InB);
-		DrawShape_Line(InEditor, Vector2.{0.0, -0.5} * InScale, Vector2.{-0.75, -1.0} * InScale, InR, InG, InB);
-		DrawShape_Line(InEditor, Vector2.{-0.75, -1.0} * InScale, Vector2.{0.0, 1.0} * InScale, InR, InG, InB);
+		Position : Vector2 = InTransform.Position;
+		Forward : Vector2 = Transform2D_CalcForwards(InTransform);
+		Right : Vector2 = Transform2D_CalcRight(InTransform);
+
+		PointA : Vector2 = Position + (InScale * ((Right * 0.0) + (Forward * 1.0)));
+		PointB : Vector2 = Position + (InScale * ((Right * 0.75) + (Forward * -1.0)));
+		PointC : Vector2 = Position + (InScale * ((Right * 0.0) + (Forward * -0.5)));
+		PointD : Vector2 = Position + (InScale * ((Right * -0.75) + (Forward * -1.0)));
+		DrawShape_Line(InEditor, PointA, PointB, InR, InG, InB);
+		DrawShape_Line(InEditor, PointB, PointC, InR, InG, InB);
+		DrawShape_Line(InEditor, PointC, PointD, InR, InG, InB);
+		DrawShape_Line(InEditor, PointD, PointA, InR, InG, InB);
+
+		DrawShape_Line(InEditor, Position, Position + Forward * InScale, 0, 255, 0);
+		DrawShape_Line(InEditor, Position, Position + Right * InScale, 255, 0, 0);
 	}
 
 	DrawShape_Line :: (InEditor : *SEditor, InStartLocation : Vector2, InEndLocation : Vector2, InR : u8, InG : u8, InB : u8)
