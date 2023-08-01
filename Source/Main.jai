@@ -20,6 +20,7 @@ main :: ()
 
     Game.InitialiseGame(*Game, "JAI SHOOTER", SCREEN_WIDTH, SCREEN_HEIGHT);
     SceneEditor.InitialiseEditor(*SceneEditor, "EDITOR WINDOW", 800, 800);
+    SScene_InitialiseRayData(*Scene);
 
     WallA : SWall;
     WallB : SWall;
@@ -58,11 +59,11 @@ main :: ()
             }
         }
 
-        Scene.Player.Transform.Orientation += 1.0;
-
         Game.UpdateGame(*Game, *Scene);
         SceneEditor.UpdateEditor(*SceneEditor, *Scene);
 
+        SSCene_ComputeRayMeasurements(*Scene);
+        
         Game.DrawGame(*Game, *Scene);
         SceneEditor.DrawEditor(*SceneEditor, *Scene);
 

@@ -59,12 +59,12 @@ SEditor :: struct
 		}
 
 		DrawShape_Arrow(InEditor, InScene.Player.Transform, 17.5, 0, 255, 255);
-
         DrawShape_Cross(InEditor, InEditor.MousePosition, 15.0, 255, 0, 0);
-        DrawShape_Circle(InEditor, InEditor.MouseTrailA, 12.0, 0, 234, 255);
-        DrawShape_Circle(InEditor, InEditor.MouseTrailB, 9.0, 0, 234, 255);
-        DrawShape_Circle(InEditor, InEditor.MouseTrailC, 6.0, 0, 234, 255);
-        DrawShape_Circle(InEditor, InEditor.MouseTrailD, 3.0, 0, 234, 255);
+
+        for RayDir, RayIndex : InScene.RayData.RayDirections
+        {
+        	DrawShape_Line(InEditor, InScene.Player.Transform.Position, InScene.Player.Transform * (RayDir * InScene.RayData.RayMeasurements[RayIndex]), 255, 255, 255);
+        }
 	}
 
 	DrawShape_Cross :: (InEditor : *SEditor, InLocation : Vector2, InExtent : float, InR : u8, InG : u8, InB : u8)
@@ -105,9 +105,6 @@ SEditor :: struct
 		DrawShape_Line(InEditor, PointB, PointC, InR, InG, InB);
 		DrawShape_Line(InEditor, PointC, PointD, InR, InG, InB);
 		DrawShape_Line(InEditor, PointD, PointA, InR, InG, InB);
-
-		DrawShape_Line(InEditor, Position, Position + Forward * InScale, 0, 255, 0);
-		DrawShape_Line(InEditor, Position, Position + Right * InScale, 255, 0, 0);
 	}
 
 	DrawShape_Line :: (InEditor : *SEditor, InStartLocation : Vector2, InEndLocation : Vector2, InR : u8, InG : u8, InB : u8)
