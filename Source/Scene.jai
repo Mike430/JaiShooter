@@ -1,7 +1,7 @@
 SSceneRayData :: struct
 {
     FOV : float = 90.0;
-    RayLength : float = 1000.0;
+    RayLength : float = RAY_LENGTH;
     RayDirections : [NUMBER_OF_RAYS]Vector2;
     RayMeasurements : [NUMBER_OF_RAYS]float;
 }
