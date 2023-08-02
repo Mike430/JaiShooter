@@ -44,6 +44,8 @@ SGame :: struct
         			ColourValue : u8 = cast(u8)(PixelDepth * 255.0);
         			PixelPtr[PixelIndex] = SDL_MapRGBA(InGame.GameWindow.WindowSurface.format, 0, ColourValue, 0, 255);
         		}
+        		else if y > HalfScreenHeight
+        			PixelPtr[PixelIndex] = SDL_MapRGBA(InGame.GameWindow.WindowSurface.format, 50, 50, 50, 255);
         	}
     	}
 

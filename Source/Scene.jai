@@ -77,6 +77,7 @@ SSCene_ComputeRayMeasurements :: (InScene : * SScene)
 
 CastRay :: (InRayStart : Vector2, InRayEnd : Vector2, InWallStart : Vector2, InWallEnd : Vector2) -> (bool, float)
 {
+	// Credit where it's due - thanks TheCodingTrain! :) (https://www.youtube.com/watch?v=TOEi6T2mtHo)
 	Intersection : Vector2;
 	x1 := InWallStart.x;
 	y1 := InWallStart.y;
