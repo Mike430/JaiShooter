@@ -39,7 +39,7 @@ main :: ()
     array_add(*Scene.Walls[1].Corners, Vector2.{-50.0, -50.0});
     array_add(*Scene.Walls[1].Corners, Vector2.{-50.0, 50.0});
 
-    Scene.Player.Transform.Position = Vector2.{50.0, 600.0};
+    Scene.Player.Transform.Position = Vector2.{200.0, 200.0};
     Scene.Player.Transform.Orientation = 0.0;
     
     exit := false;

@@ -2,10 +2,6 @@ SEditor :: struct
 {
 	EditorWindow : SWindow;
 	MousePosition : Vector2;
-	MouseTrailA : Vector2;
-	MouseTrailB : Vector2;
-	MouseTrailC : Vector2;
-	MouseTrailD : Vector2;
 	EditorRenderer : *SDL_Renderer = null;
 
 	InitialiseEditor :: (InEditor : *SEditor, InEditorName : string, InWindowWidth : s32, InWindowHeight : s32) -> bool
@@ -26,10 +22,6 @@ SEditor :: struct
 	{
 		X, Y : s32;
 		MouseState : u32 = SDL_GetMouseState(*X, *Y);
-		InEditor.MouseTrailD = InEditor.MouseTrailC;
-		InEditor.MouseTrailC = InEditor.MouseTrailB;
-		InEditor.MouseTrailB = InEditor.MouseTrailA;
-		InEditor.MouseTrailA = InEditor.MousePosition;
 		InEditor.MousePosition.x = cast(float)X;
 		InEditor.MousePosition.y = cast(float)Y;
 	}
@@ -38,7 +30,7 @@ SEditor :: struct
 	{
         SDL_SetRenderDrawColor( InEditor.EditorRenderer, 0, 0, 0, 0 );
         SDL_RenderClear(InEditor.EditorRenderer);
-
+        
         DrawWorld(InEditor, InScene);
 
         SDL_UpdateWindowSurface(InEditor.EditorWindow.WindowPtr);
@@ -60,6 +52,7 @@ SEditor :: struct
 
 		DrawShape_Arrow(InEditor, InScene.Player.Transform, 17.5, 0, 255, 255);
         DrawShape_Cross(InEditor, InEditor.MousePosition, 15.0, 255, 0, 0);
+        //DrawShape_Cross(InEditor, Vector2.{370.833, 370.833}, 10, 0, 255, 255);
 
         for RayDir, RayIndex : InScene.RayData.RayDirections
         {

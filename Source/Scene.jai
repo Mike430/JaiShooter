@@ -45,6 +45,7 @@ SSCene_ComputeRayMeasurements :: (InScene : * SScene)
 {
 	for RayDir, RIndex : InScene.RayData.RayDirections
     {
+    	InScene.RayData.RayMeasurements[RIndex] = InScene.RayData.RayLength;
         RayStart := InScene.Player.Transform.Position;
         RayEnd := InScene.Player.Transform * (RayDir * InScene.RayData.RayLength);
         for Wall, WIndex : InScene.Walls
@@ -54,19 +55,19 @@ SSCene_ComputeRayMeasurements :: (InScene : * SScene)
                 if CIndex < Wall.Corners.count - 1
                 {
                 	Hit, RayDistance := CastRay(RayStart, RayEnd, Corner, Wall.Corners[CIndex + 1]);
-                    if Hit == true
+                    if Hit == true && RayDistance < InScene.RayData.RayMeasurements[RIndex]
                     {
                     	InScene.RayData.RayMeasurements[RIndex] = RayDistance;
                     }
                 }
-                //		else if Wall.Loops == true
-                //		{
-                //		    FoundRayLength : float = 0.0;
-                //		    if(CastRay(PlayerPosition, SGame.RayLength, Corner, Wall.Corners[0], FoundRayLength))
-                //		    {
-                //		        RayMeasurements[RIndex] = FoundRayLength;
-                //		    }
-                //		}
+                else if Wall.Loops == true
+                {
+                	Hit, RayDistance := CastRay(RayStart, RayEnd, Corner, Wall.Corners[0]);
+                    if Hit == true && RayDistance < InScene.RayData.RayMeasurements[RIndex]
+                    {
+                    	InScene.RayData.RayMeasurements[RIndex] = RayDistance;
+                    }
+                }
             }
         }
     }
@@ -82,11 +83,11 @@ CastRay :: (InRayStart : Vector2, InRayEnd : Vector2, InWallStart : Vector2, InW
 	x2 := InWallEnd.x;
 	y2 := InWallEnd.y;
 	x3 := InRayStart.x;
-	y3 := InRayStart.x;
+	y3 := InRayStart.y;
 	x4 := InRayEnd.x;
-	y4 := InRayEnd.x;
+	y4 := InRayEnd.y;
 
-	den := (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+	den : float = ((x1 - x2) * (y3 - y4)) - ((y1 - y2) * (x3 - x4));
 
 	if den == 0.0
 	{
@@ -94,14 +95,14 @@ CastRay :: (InRayStart : Vector2, InRayEnd : Vector2, InWallStart : Vector2, InW
 	}
 
 	t := ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / den;
-	u := (((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / den) * -1;
+	u := -((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / den;
 
 	if t > 0 && t < 1 && u > 0
 	{
 		Intersection.x = x1 + t * (x2 - x1);
 		Intersection.y = y1 + t * (y2 - y1);
 		V : Vector2 = Intersection - InRayStart;
-		OutDistance : float = sqrt(V.x * V.x + V.y + V.y);
+		OutDistance : float = sqrt(V.x*V.x + V.y*V.y);
 		return true, OutDistance;
 	}
 	else
