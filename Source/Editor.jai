@@ -30,7 +30,7 @@ SEditor :: struct
 	{
         SDL_SetRenderDrawColor( InEditor.EditorRenderer, 0, 0, 0, 0 );
         SDL_RenderClear(InEditor.EditorRenderer);
-        
+
         DrawWorld(InEditor, InScene);
 
         SDL_UpdateWindowSurface(InEditor.EditorWindow.WindowPtr);
@@ -52,11 +52,10 @@ SEditor :: struct
 
 		DrawShape_Arrow(InEditor, InScene.Player.Transform, 17.5, 0, 255, 255);
         DrawShape_Cross(InEditor, InEditor.MousePosition, 15.0, 255, 0, 0);
-        //DrawShape_Cross(InEditor, Vector2.{370.833, 370.833}, 10, 0, 255, 255);
 
         for RayDir, RayIndex : InScene.RayData.RayDirections
         {
-        	DrawShape_Line(InEditor, InScene.Player.Transform.Position, InScene.Player.Transform * (RayDir * InScene.RayData.RayMeasurements[RayIndex]), 255, 255, 255);
+        	if RayIndex % 200 == 0 DrawShape_Line(InEditor, InScene.Player.Transform.Position, InScene.Player.Transform * (RayDir * InScene.RayData.RayMeasurements[RayIndex]), 255, 255, 255);
         }
 	}
 
