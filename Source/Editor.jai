@@ -18,7 +18,7 @@ SEditor :: struct
         return true;
 	}
 
-	UpdateEditor :: (InEditor : *SEditor, InScene : *SScene)
+	UpdateEditor :: (InEditor : *SEditor, InScene : *SScene, InDeltaTime : float)
 	{
 		X, Y : s32;
 		MouseState : u32 = SDL_GetMouseState(*X, *Y);
@@ -52,6 +52,10 @@ SEditor :: struct
 
 		DrawShape_Arrow(InEditor, InScene.Player.Transform, 17.5, 0, 255, 255);
         DrawShape_Cross(InEditor, InEditor.MousePosition, 15.0, 255, 0, 0);
+
+        PlayerPosition : Vector2 = InScene.Player.Transform.Position;
+        DrawShape_Line(InEditor, PlayerPosition, PlayerPosition + ShooterGlobalControllerInputs.RightJoyStick * 200, 3, 232, 252);
+        DrawShape_Line(InEditor, PlayerPosition, PlayerPosition + ShooterGlobalControllerInputs.LeftJoyStick * 200, 3, 252, 132);
 
         for RayDir, RayIndex : InScene.RayData.RayDirections
         {

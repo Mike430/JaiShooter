@@ -17,10 +17,16 @@ SGame :: struct
         return true;
 	}
 
-	UpdateGame :: (InGame : SGame, InScene : *SScene)
+	UpdateGame :: (InGame : SGame, InScene : *SScene, InDeltaTime : float)
 	{
-        InScene.Player.Transform.Orientation += 1.0;
-        //InScene.Player.Transform.Orientation = 150.0;
+        InScene.Player.Transform.Orientation += -ShooterGlobalControllerInputs.RightJoyStick.x * InScene.Player.TurnSpeed * InDeltaTime;
+
+        Forward := Transform2D_CalcForwards(InScene.Player.Transform);
+        Right := Transform2D_CalcRight(InScene.Player.Transform);
+        MoveBy := Forward * -ShooterGlobalControllerInputs.LeftJoyStick.y + Right * ShooterGlobalControllerInputs.LeftJoyStick.x;
+        MoveBy = unit_vector(MoveBy);
+        MoveBy *= InScene.Player.MoveSpeed * InDeltaTime;
+        InScene.Player.Transform.Position += MoveBy;
     }
 
 	DrawGame :: (InGame : SGame, InScene : *SScene)

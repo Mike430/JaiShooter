@@ -8,10 +8,11 @@
 #load "Scene.jai";
 #load "Game.jai";
 #load "Editor.jai";
+#load "Input.jai";
 
 main :: ()
 {
-    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER);
     print("SDL_VERSION =   \t\t%\n", to_string(SDL_GetRevision()));
 
     Game : SGame;
@@ -56,11 +57,28 @@ main :: ()
                     if event.key.keysym.sym == SDLK_ESCAPE exit = true;
                 case SDL_WINDOWEVENT;
                     if event.window.event == SDL_WINDOWEVENT_CLOSE exit = true;
+                case SDL_CONTROLLERDEVICEADDED;
+                    if ShooterGlobalController == null
+                    {
+                        ShooterGlobalController = SDL_GameControllerOpen(event.cdevice.which);
+                        print("New controller found to use :)\n");
+                    }
+                case SDL_CONTROLLERDEVICEREMOVED;
+                    if ShooterGlobalController != null && event.cdevice.which == SDL_JoystickInstanceID(SDL_GameControllerGetJoystick(ShooterGlobalController))
+                    {
+                        SDL_GameControllerClose(ShooterGlobalController);
+                        ShooterGlobalController = FindGameControllers();
+
+                        if ShooterGlobalController == null print("We lost our controller and found no replacements :(\n");
+                        else print("We lost our controller but we're moving on :)\n");
+                    }
             }
+
+            ProcessControllerEvents();
         }
 
-        Game.UpdateGame(*Game, *Scene);
-        SceneEditor.UpdateEditor(*SceneEditor, *Scene);
+        Game.UpdateGame(*Game, *Scene, UPDATE_DELTA);
+        SceneEditor.UpdateEditor(*SceneEditor, *Scene, UPDATE_DELTA);
 
         SSCene_ComputeRayMeasurements(*Scene);
         
@@ -68,7 +86,7 @@ main :: ()
         SceneEditor.DrawEditor(*SceneEditor, *Scene);
 
         // REPLACE WITH PROPER TIMER LOGIC
-        SDL_Delay(16);
+        SDL_Delay(UPDATE_DELAY);
     }
 
     Game.GameWindow.DestroyWindow(*Game.GameWindow);
