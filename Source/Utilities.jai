@@ -1,5 +1,3 @@
-JOYSTICK_DEAD_ZONE :: 8000; // https://lazyfoo.net/tutorials/SDL/19_gamepads_and_joysticks/index.php - "The way SDL handles analog sticks on a game controller is that it converts its position into a number between -32768 and 32767"
-
 SCREEN_WIDTH :: 1280;
 SCREEN_HEIGHT :: 800;
 
