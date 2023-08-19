@@ -1,3 +1,6 @@
+// Credit and basic resources for getting input working go to this tutorial: https://blog.rubenwardy.com/2023/01/24/using_sdl_gamecontroller/
+JOYSTICK_DEAD_ZONE :: 8000; // https://lazyfoo.net/tutorials/SDL/19_gamepads_and_joysticks/index.php - "The way SDL handles analog sticks on a game controller is that it converts its position into a number between -32768 and 32767"
+
 SControllerInput :: struct
 {
 	RightJoyStick : Vector2;
