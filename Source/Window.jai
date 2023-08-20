@@ -30,4 +30,9 @@ SWindow :: struct
     {
         return InWindow.WindowSurface.pixels;
     }
+
+    SetWindowPosition :: (InWindow : *SWindow, InX : s32, InY : s32)
+    {
+        SDL_SetWindowPosition(InWindow.WindowPtr, InX, InY);
+    }
 }

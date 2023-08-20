@@ -15,6 +15,8 @@ SEditor :: struct
             return false;
         }
 
+        InEditor.EditorWindow.SetWindowPosition(*InEditor.EditorWindow, 1500, 200);
+
         return true;
 	}
 

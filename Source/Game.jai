@@ -14,6 +14,8 @@ SGame :: struct
             return false;
         }
 
+        InGame.GameWindow.SetWindowPosition(*InGame.GameWindow, 200, 200);
+
         return true;
 	}
 
