@@ -1,6 +1,6 @@
 SPlayer :: struct
 {
 	Transform : STransform2D;
-	TurnSpeed : float = 180;
-	MoveSpeed : float = 100;
+	TurnSpeed : float = 360;
+	MoveSpeed : float = 200;
 }

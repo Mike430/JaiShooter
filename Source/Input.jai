@@ -30,9 +30,9 @@ ProcessControllerEvents :: ()
 	if ShooterGlobalController != null
     {
     	LX : float = cast(float) SDL_GameControllerGetAxis(ShooterGlobalController, SDL_GameControllerAxis.SDL_CONTROLLER_AXIS_LEFTX);
-    	LY : float = cast(float) SDL_GameControllerGetAxis(ShooterGlobalController, SDL_GameControllerAxis.SDL_CONTROLLER_AXIS_LEFTY);
+    	LY : float = cast(float) SDL_GameControllerGetAxis(ShooterGlobalController, SDL_GameControllerAxis.SDL_CONTROLLER_AXIS_LEFTY) * -1;
     	RX : float = cast(float) SDL_GameControllerGetAxis(ShooterGlobalController, SDL_GameControllerAxis.SDL_CONTROLLER_AXIS_RIGHTX);
-    	RY : float = cast(float) SDL_GameControllerGetAxis(ShooterGlobalController, SDL_GameControllerAxis.SDL_CONTROLLER_AXIS_RIGHTY);
+    	RY : float = cast(float) SDL_GameControllerGetAxis(ShooterGlobalController, SDL_GameControllerAxis.SDL_CONTROLLER_AXIS_RIGHTY) * -1;
     	ShooterGlobalControllerInputs.RightJoyStick.x = ifx RX > JOYSTICK_DEAD_ZONE || RX < -JOYSTICK_DEAD_ZONE then RX / cast(float) S16_MAX else 0.0;
     	ShooterGlobalControllerInputs.RightJoyStick.y = ifx RY > JOYSTICK_DEAD_ZONE || RY < -JOYSTICK_DEAD_ZONE  then RY / cast(float) S16_MAX else 0.0;
     	ShooterGlobalControllerInputs.LeftJoyStick.x = ifx LX > JOYSTICK_DEAD_ZONE || LX < -JOYSTICK_DEAD_ZONE  then LX / cast(float) S16_MAX else 0.0;

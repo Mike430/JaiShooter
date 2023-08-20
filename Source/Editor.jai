@@ -54,13 +54,12 @@ SEditor :: struct
         DrawShape_Cross(InEditor, InEditor.MousePosition, 15.0, 255, 0, 0);
 
         PlayerPosition : Vector2 = InScene.Player.Transform.Position;
-        DrawShape_Line(InEditor, PlayerPosition, PlayerPosition + ShooterGlobalControllerInputs.RightJoyStick * 200, 3, 232, 252);
-        DrawShape_Line(InEditor, PlayerPosition, PlayerPosition + ShooterGlobalControllerInputs.LeftJoyStick * 200, 3, 252, 132);
-
-        for RayDir, RayIndex : InScene.RayData.RayDirections
-        {
-        	if RayIndex % 200 == 0 DrawShape_Line(InEditor, InScene.Player.Transform.Position, InScene.Player.Transform * (RayDir * InScene.RayData.RayMeasurements[RayIndex]), 255, 255, 255);
-        }
+        PlayerForwards : Vector2 = Transform2D_CalcForwards(InScene.Player.Transform);
+        PlayerRight : Vector2 = Transform2D_CalcRight(InScene.Player.Transform);
+        ControllerRightStick := ShooterGlobalControllerInputs.RightJoyStick.x * PlayerRight + ShooterGlobalControllerInputs.RightJoyStick.y * PlayerForwards;
+        ControllerLeftStick := ShooterGlobalControllerInputs.LeftJoyStick.x * PlayerRight + ShooterGlobalControllerInputs.LeftJoyStick.y * PlayerForwards;
+        DrawShape_Line(InEditor, PlayerPosition, PlayerPosition + ControllerRightStick * 50, 3, 232, 252);
+        DrawShape_Line(InEditor, PlayerPosition, PlayerPosition + ControllerLeftStick * 50, 3, 252, 132);
 	}
 
 	DrawShape_Cross :: (InEditor : *SEditor, InLocation : Vector2, InExtent : float, InR : u8, InG : u8, InB : u8)

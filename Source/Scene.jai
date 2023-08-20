@@ -4,6 +4,7 @@ SSceneRayData :: struct
     RayLength : float = RAY_LENGTH;
     RayDirections : [NUMBER_OF_RAYS]Vector2;
     RayMeasurements : [NUMBER_OF_RAYS]float;
+    WallRenderHeightForRay : [NUMBER_OF_RAYS]s64;
 }
 
 //----------------------------------------------------------
