@@ -19,7 +19,7 @@ main :: ()
     SceneEditor : SEditor;
     Scene : SScene;
 
-    Game.InitialiseGame(*Game, "JAI SHOOTER", SCREEN_WIDTH, SCREEN_HEIGHT);
+    Game.InitialiseGame(*Game, "JAI SHOOTER", GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT);
     SceneEditor.InitialiseEditor(*SceneEditor, "EDITOR WINDOW", 800, 800);
     SScene_InitialiseRayData(*Scene);
 

@@ -36,9 +36,9 @@ SGame :: struct
         // Sample the ray lenght per row
         SDL_FillRect(InGame.GameWindow.WindowSurface, null, SDL_MapRGB(InGame.GameWindow.WindowSurface.format, 100, 100, 100));
         PixelPtr : *u32 = InGame.GameWindow.WindowSurface.pixels;
-        HalfScreenHeight := SCREEN_HEIGHT / 2;
+        HalfScreenHeight := GAME_WINDOW_HEIGHT / 2;
 
-        for x : 0 .. SCREEN_WIDTH - 1
+        for x : 0 .. GAME_WINDOW_WIDTH - 1
         {
             PixelRayLength := InScene.RayData.RayMeasurements[x];
             WallProportion := ((PixelRayLength / RAY_LENGTH) * -1) + 1;
@@ -46,11 +46,11 @@ SGame :: struct
             InScene.RayData.WallRenderHeightForRay[x] = cast(s64)WallHeight;
         }
 
-        for y : 0 .. SCREEN_HEIGHT - 1
+        for y : 0 .. GAME_WINDOW_HEIGHT - 1
         {
-        	for x : 0 .. SCREEN_WIDTH - 1
+        	for x : 0 .. GAME_WINDOW_WIDTH - 1
         	{
-        		PixelIndex := y * SCREEN_WIDTH + x;
+        		PixelIndex := y * GAME_WINDOW_WIDTH + x;
                 PixelRayLength := InScene.RayData.RayMeasurements[x];
                 PixelDepth := (((PixelRayLength / RAY_LENGTH) * -1.0) + 1);
         		WallColumnHeight : s64 = cast(s64)InScene.RayData.WallRenderHeightForRay[x];

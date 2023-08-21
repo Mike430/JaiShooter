@@ -3,6 +3,8 @@ SEditor :: struct
 	EditorWindow : SWindow;
 	MousePosition : Vector2;
 	EditorRenderer : *SDL_Renderer = null;
+	CameraOffset : Vector2;
+	CameraOffsetTransformed : Vector2;
 
 	InitialiseEditor :: (InEditor : *SEditor, InEditorName : string, InWindowWidth : s32, InWindowHeight : s32) -> bool
 	{
@@ -15,6 +17,8 @@ SEditor :: struct
             return false;
         }
 
+        InEditor.CameraOffset.x = cast(float)InWindowWidth * 0.5;
+        InEditor.CameraOffset.y = cast(float)InWindowHeight * 0.5;
         InEditor.EditorWindow.SetWindowPosition(*InEditor.EditorWindow, 1500, 200);
 
         return true;
@@ -22,10 +26,11 @@ SEditor :: struct
 
 	UpdateEditor :: (InEditor : *SEditor, InScene : *SScene, InDeltaTime : float)
 	{
+		InEditor.CameraOffsetTransformed = InEditor.CameraOffset - InScene.Player.Transform.Position;
 		X, Y : s32;
 		MouseState : u32 = SDL_GetMouseState(*X, *Y);
-		InEditor.MousePosition.x = cast(float)X;
-		InEditor.MousePosition.y = cast(float)Y;
+		InEditor.MousePosition.x = InScene.Player.Transform.Position.x + cast(float)X - InEditor.CameraOffset.x;
+		InEditor.MousePosition.y = InScene.Player.Transform.Position.y + cast(float)Y - InEditor.CameraOffset.y;
 	}
 
 	DrawEditor :: (InEditor : *SEditor, InScene : *SScene)
@@ -107,6 +112,10 @@ SEditor :: struct
 	DrawShape_Line :: (InEditor : *SEditor, InStartLocation : Vector2, InEndLocation : Vector2, InR : u8, InG : u8, InB : u8)
 	{
         SDL_SetRenderDrawColor(InEditor.EditorRenderer, InR, InG, InB, 255);
-        SDL_RenderDrawLine(InEditor.EditorRenderer, cast(s32)InStartLocation.x, cast(s32)InStartLocation.y, cast(s32)InEndLocation.x, cast(s32)InEndLocation.y);
+        SDL_RenderDrawLine(InEditor.EditorRenderer,
+                           cast(s32)(InEditor.CameraOffsetTransformed.x + InStartLocation.x),
+                           cast(s32)(InEditor.CameraOffsetTransformed.y + InStartLocation.y),
+                           cast(s32)(InEditor.CameraOffsetTransformed.x + InEndLocation.x),
+                           cast(s32)(InEditor.CameraOffsetTransformed.y + InEndLocation.y));
 	}
 }
